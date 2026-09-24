@@ -182,24 +182,28 @@ email-constructor/
 
 ```js
 {
-  spacing: 16,          // базовый отступ
-  letterSpacing: 0,
-  fontFamily: 'Arial, Helvetica, sans-serif',
-  colors: {
-    text: '#222222',
-    muted: '#666666',
-    accent: '#e53935',   // красный
-    link: '#0066cc',
-    background: '#ffffff',
-    cardBg: '#f5f5f5'
-  },
-  typography: {
-    h1: { size: 24, lineHeight: 30, weight: 700 },
-    h2: { size: 20, lineHeight: 26, weight: 700 },
-    body: { size: 14, lineHeight: 20, weight: 400 },
-    small: { size: 12, lineHeight: 16, weight: 400 }
-  }
-}
+	// Базовый отступ (в пикселях)
+	spacing: 16,
+	letterSpacing: 0,
+
+	// Основной шрифт
+	fontFamily: 'Arial, sans-serif',
+
+	// Цветовая палитра
+	colors: {
+		text: '#1A1230',
+		accent: '#FF0F43', // красный (для важных элементов)
+		background: '#ffffff',
+		cardBg: '#f5f5f5',
+	},
+
+	// Типографика
+	typography: {
+		h1: { size: 24, lineHeight: 1.3 },
+		h2: { size: 20, lineHeight: 1.3 },
+		body: { size: 14, lineHeight: 1.3 },
+	},
+};
 ```
 
 ### 4.2. parser.js

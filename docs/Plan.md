@@ -18,13 +18,13 @@
 
 ## Этап 1. Дизайн-токены
 
-- [ ] Создать файл `src/core/tokens.js`
-- [ ] Описать `spacing` — базовый отступ (16)
-- [ ] Описать `fontFamily` — основной шрифт
-- [ ] Описать `colors`: text, muted, accent (красный), link, background, cardBg
-- [ ] Описать `typography`: h1, h2, body, small (size, lineHeight, weight)
-- [ ] Экспортировать объект токенов
-- [ ] Проверить, что файл импортируется без ошибок
+- [x] Создать файл `src/core/tokens.js`
+- [x] Описать `spacing` — базовый отступ (16)
+- [x] Описать `fontFamily` — основной шрифт
+- [x] Описать colors: text (#1A1230), accent (#FF0F43), background, cardBg
+- [x] Описать typography: h1, h2, body (size, lineHeight как множитель 1.3)
+- [x] Экспортировать объект токенов
+- [x] Проверить, что файл импортируется без ошибок
 
 ---
 
