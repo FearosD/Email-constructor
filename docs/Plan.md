@@ -50,14 +50,14 @@
 - [x] Установить пакет `typograf` (`npm install typograf`) для будущего использования в редакторе
 
 ## Этап 3. Контекст вложенности
-- [ ] Создать файл `src/core/context.js`
-- [ ] Описать структуру начального контекста: `depth`, `contentWidth`, `parentType`, `tokens`
-- [ ] Реализовать `buildContext(parentContext, blockType)`
-  - [ ] Увеличивает `depth` на 1
-  - [ ] Уменьшает `contentWidth` на `spacing * 2`
-  - [ ] Обновляет `parentType`
-- [ ] Проверить расчёт на цепочке из 3–4 уровней вложенности
-- [ ] Убедиться, что `contentWidth` не уходит в отрицательные значения
+- [x] Создать файл `src/core/context.js`
+- [x] Описать структуру начального контекста: `depth`, `contentWidth`, `parentType`, `tokens`
+- [x] Реализовать `buildContext(parentContext, blockType)`
+  - [x] Увеличивает `depth` на 1
+  - [x] Уменьшает `contentWidth` на `spacing * 2`
+  - [x] Обновляет `parentType`
+- [x] Проверить расчёт на цепочке из 3–4 уровней вложенности
+- [x] Убедиться, что `contentWidth` не уходит в отрицательные значения
 
 ## Этап 4. Первые шаблоны блоков
 ### 4.1. Шаблон кнопки
