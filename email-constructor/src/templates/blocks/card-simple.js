@@ -1,4 +1,4 @@
-import tokens from '../../tokens.js';
+import {tokens} from '../../tokens.js';
 
 export const cardSimpleTemplate = {
   type: 'card-simple',

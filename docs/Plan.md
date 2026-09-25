@@ -186,19 +186,19 @@
 
 ## Этап 8. Store и дерево блоков
 ### 8.1. Store
-[ ] Создать `src/editor/stores/emailStore.js` (Pinia)
-[ ] Состояние: `document`, `selectedBlockId`
-[ ] Действия:
-[ ] `addBlock(parentId, type)`
-[ ] `removeBlock(blockId)`
-[ ] `moveBlock(blockId, direction)`
-[ ] `updateProps(blockId, props)`
-[ ] `updateContent(blockId, content)`
-[ ] `selectBlock(blockId)`
-[ ] `updateMeta(field, value)` ← **новое**: для изменения полей meta (subject, preheader, headerVariant)
-[ ] Геттеры:
-[ ] `selectedBlock`
-[ ] `templateForBlock(block)`
+- [ ] Создать `src/editor/stores/emailStore.js` (Pinia)
+- [ ] Состояние: `document`, `selectedBlockId`
+- [ ] Действия:
+- [ ] `addBlock(parentId, type)`
+- [ ] `removeBlock(blockId)`
+- [ ] `moveBlock(blockId, direction)`
+- [ ] `updateProps(blockId, props)`
+- [ ] `updateContent(blockId, content)`
+- [ ] `selectBlock(blockId)`
+- [ ] `updateMeta(field, value)` ← **новое**: для изменения полей meta (subject, preheader, headerVariant)
+- [ ] Геттеры:
+- [ ] `selectedBlock`
+- [ ] `templateForBlock(block)`
 
 ###  8.2. Дерево блоков
 - [ ] Создать `src/editor/components/BlockTree.vue`
