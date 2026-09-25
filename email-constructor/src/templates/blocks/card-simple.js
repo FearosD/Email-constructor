@@ -1,36 +1,30 @@
-import {tokens} from '../../tokens.js';
+import { tokens } from '../../tokens.js';
 
 export const cardSimpleTemplate = {
-  type: 'card-simple',
-  title: 'Простая плашка',
-  category: 'layout',
-  
-  // Опций нет — плашка всегда белая, пользователь цвет не меняет
-  options: {},
+	type: 'card-simple',
+	title: 'Простая плашка',
+	category: 'layout',
 
-  isContainer: true,
-  
-  allowedChildren: [
-    'text', 
-    'button', 
-    'important', 
-    'card-grey', 
-    'image'
-  ],
-  
-  allowedParents: ['root'],
+	// Опций нет — плашка всегда белая, пользователь цвет не меняет
+	options: {},
 
-  /**
-   * @param {object} props - пусто (опций нет)
-   * @param {string} children - HTML дочерних блоков
-   * @param {object} ctx - контекст
-   */
-  render: (props, children, ctx) => {
-    const totalWidth = ctx.contentWidth || 500;
-    const sidePadding = tokens.spacing; // 16px из токенов
-    const contentWidth = totalWidth - sidePadding * 2; // 500 - 32 = 468
+	isContainer: true,
 
-    return `
+	allowedChildren: ['text', 'button', 'important', 'card-grey', 'image'],
+
+	allowedParents: ['root'],
+
+	/**
+	 * @param {object} props - пусто (опций нет)
+	 * @param {string} children - HTML дочерних блоков
+	 * @param {object} ctx - контекст
+	 */
+	render: (props, children, ctx) => {
+		const totalWidth = ctx.contentWidth || 500;
+		const sidePadding = tokens.spacing; // 16px из токенов
+		const contentWidth = totalWidth - sidePadding * 2; // 500 - 32 = 468
+
+		return `
       <table style="padding: 0; text-align: left; margin: 0 auto; border-spacing: 0; border-collapse: collapse; border-radius: 16px; -webkit-border-radius: 16px; -moz-border-radius: 16px; overflow: hidden;" border="0" width="${totalWidth}" cellspacing="0" cellpadding="0" bgcolor="${tokens.colors.background}">
         <tbody>
           <tr>
@@ -45,5 +39,5 @@ export const cardSimpleTemplate = {
         </tbody>
       </table>
     `;
-  }
+	},
 };
