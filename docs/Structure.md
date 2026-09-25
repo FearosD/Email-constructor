@@ -286,19 +286,20 @@ root (обёртка контента):  depth=0, width=500
    │        │    блоки      │        │
    └────────┴───────────────┴────────┘
 ```
-4. Создаётся начальный контекст (root, width=500)
-5. Для каждого блока из document.blocks вызывается renderBlock(node, context)
+4. Создаётся начальный контекст (`root`, `width=500`)
+5. Для каждого блока из `document.blocks` вызывается `renderBlock(node, context)`
 6. renderBlock:
-   - находит шаблон в реестре по node.type
-   - если блок — контейнер, рекурсивно рендерит children с обновлённым контекстом
-   - если блок содержит richtext, парсит текст через parser
-   - вызывает template.render(props, preparedChildren, context)
+   - находит шаблон в реестре по `node.type`
+   - если блок — контейнер, рекурсивно рендерит `children` с обновлённым контекстом
+   - если блок содержит `richtext`, парсит текст через parser
+   - вызывает `template.render(props, preparedChildren, context)`
+   - если блок — контейнер, рекурсивно рендерит `children` с обновлённым контекстом и объединяет их через `.join('<br>')` для соблюдения вертикального ритма внутри плашки. Корневые блоки объединяются через `.join('<br><br>')`.
 7. Рендерится подвал: footerTemplate.render(ctx600)
-8. Всё собирается в полный HTML с <!DOCTYPE>, <head>, <body>
+8. Всё собирается в полный HTML с `<!DOCTYPE>, <head>, <body>`
 
 Сигнатура системных блоков отличается:
-- headerTemplate.render(variant, ctx) — первый аргумент вариант, не props
-- footerTemplate.render(ctx) — без props, контент захардкожен
+- `headerTemplate.render(variant, ctx)` — первый аргумент вариант, не props
+- `footerTemplate.render(ctx)` — без props, контент захардкожен
 
 ### 4.5. validator.js
 

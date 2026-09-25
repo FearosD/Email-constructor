@@ -1,4 +1,4 @@
-import { tokens } from '../../tokens.js';
+import { tokens } from '../../core/tokens.js';
 
 export const cardHeadingTemplate = {
 	type: 'card-heading',

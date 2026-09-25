@@ -1,4 +1,4 @@
-import { tokens } from '../../tokens.js';
+import { tokens } from '../../core/tokens.js';
 
 export const importantTemplate = {
 	type: 'important',
