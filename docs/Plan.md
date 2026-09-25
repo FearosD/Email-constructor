@@ -59,43 +59,109 @@
 - [x] Проверить расчёт на цепочке из 3–4 уровней вложенности
 - [x] Убедиться, что `contentWidth` не уходит в отрицательные значения
 
+Да, оба этапа нужно скорректировать — они сильно изменились по сути. Вот полные обновлённые версии:
+
+---
+
 ## Этап 4. Первые шаблоны блоков
-### 4.1. Шаблон кнопки
-- [ ] Создать `src/templates/blocks/button.js`
-- [ ] Описать структуру: `type`, `title`, `category`, `options`, `isContainer`, `allowedParents`, `render`
-- [ ] Реализовать `render`: таблица, ссылка, инлайн-стили
-- [ ] Проверить, что `render` возвращает валидный HTML
 
-### 4.2. Текстовые шаблоны
-- [ ] Создать `src/templates/text/paragraph.js` — рендер через парсер
-- [ ] Создать `src/templates/text/heading1.js`
-- [ ] Создать `src/templates/text/heading2.js`
+### 4.1. Системные шаблоны (`src/templates/blocks/header.js`, `footer.js`)
+- [x] Создать `src/templates/blocks/header.js`
+- [x] Добавить флаг `isSystem: true` (блок не показывается в палитре)
+- [x] Добавить поле `variants` со значениями `white` и `red` (URL + srcset для каждой картинки)
+- [x] Сигнатура `render`: первым аргументом передаётся `variant` (строка), а не `props`
+- [x] Рендер: просто `<img>` с `src`, `srcset`, `width="600"`, `height="95"`, `style="float:right"` — без оборачивания в таблицу
+- [x] Создать `src/templates/blocks/footer.js`
+- [x] Добавить флаг `isSystem: true`
+- [x] Рендер: картинка-разделитель (`footer.png` с `srcset`) + жёстко заданная таблица подвала (600px)
+- [x] Контент подвала полностью захардкожен, опций нет
+- [x] Проверить, что оба файла импортируются без ошибок
 
-### 4.3. Простой контейнер
-- [ ] Создать `src/templates/blocks/card-simple.js`
-- [ ] Указать `isContainer: true`
-- [ ] Указать `allowedChildren`
-- [ ] Реализовать `render`: обёртка-таблица + вывод детей
+### 4.2. Контентные шаблоны (`src/templates/blocks/`)
+- [x] Создать `src/templates/blocks/card-simple.js`
+  - [x] `isContainer: true`, опций нет (цвет фона берётся из `tokens.colors.background`)
+  - [x] `allowedParents: ['root']` (плашка не вкладывается в себя)
+  - [x] `allowedChildren`: `text`, `important`, `card-grey`, `button`, `image` (список расширяемый)
+  - [x] Рендер: таблица 500px (из `ctx.contentWidth`), отступы через столбцы `width="16"` (из `tokens.spacing`), центральная ячейка `width="${totalWidth - 32}"`
+  - [x] Скругления: `border-radius: 16px` + префиксы `-webkit-`, `-moz-` + `overflow: hidden`
+  - [x] Костыль-распорка снизу: `<span>` с точкой, цвет совпадает с фоном плашки
+- [x] Создать `src/templates/blocks/card-heading.js`
+  - [x] `isContainer: true`
+  - [x] Опции: `heading` (тип `richtext`), `icon` (тип `select` со значениями `desktop`, `man`, `book`)
+  - [x] `allowedParents: ['root']`
+  - [x] Рендер: две строки таблицы. Верхняя — заголовок (434px) + иконка (34px). Нижняя — контент с `colspan="2"` и шириной 468px
+  - [x] Иконка рендерится с `src` и `srcset` (динамически подставляется по значению опции `icon`)
+  - [x] Заголовок вставляется как готовый HTML от парсера (без ручного оборачивания в `<b>` или `<span>`)
+- [x] Создать `src/templates/blocks/card-grey.js`
+  - [x] `isContainer: false` (атомарный блок)
+  - [x] Опция: `content` (тип `richtext`)
+  - [x] `allowedParents: ['card-simple', 'card-heading']` (только внутри белой плашки)
+  - [x] Жёсткая ширина 468px, отступы через столбцы 16px
+  - [x] Скругления: `border-radius: 8px`
+  - [x] Цвет фона из `tokens.colors.cardBg`
+- [x] Создать `src/templates/blocks/important.js`
+  - [x] `isContainer: false` (атомарный блок)
+  - [x] Опция: `content` (тип `richtext`)
+  - [x] `allowedParents: ['root', 'card-simple', 'card-heading']`
+  - [x] Динамическая ширина из `ctx.contentWidth` (500px в руте, 468px внутри карточки)
+  - [x] Столбец с красной линией: `width="12"`, `border-left: 4px solid ${tokens.colors.accent}` (хардкод)
+  - [x] Контентная ячейка: `width = totalWidth - 12`
+  - [x] Без отбивных `<br>` сверху и снизу
+- [x] Создать `src/templates/blocks/text.js`
+  - [x] `isContainer: false` (атомарный блок)
+  - [x] Опция: `content` (тип `richtext`)
+  - [x] `allowedParents: ['root', 'card-simple', 'card-heading']`
+  - [x] Рендер: просто возвращает `props.content` (парсер уже отработал)
+  - [x] Без дополнительных таблиц и обёрток
 
-### 4.4. Реестр шаблонов
-- [ ] Создать `src/templates/index.js`
-- [ ] Импортировать все шаблоны
-- [ ] Экспортировать объект-карту `{ [type]: template }`
+### 4.3. Реестр шаблонов (`src/templates/index.js`)
+- [x] Импортировать все созданные шаблоны
+- [x] Экспортировать объект-карту `templateRegistry` вида `{ 'header': headerTemplate, ... }`
+- [x] Системные блоки (`header`, `footer`) тоже включаются в реестр (нужны рендереру), но будут фильтроваться в палитре по флагу `isSystem`
+- [x] Экспорт по умолчанию для удобства импорта
+
+---
 
 ## Этап 5. Рендерер
+
+### 5.1. Базовый рендерер (`src/core/renderer.js`)
 - [ ] Создать файл `src/core/renderer.js`
-- [ ] Реализовать `renderBlock(node, context)`
-  - [ ] Находит шаблон в реестре по `node.type`
-  - [ ] Если шаблон не найден — возвращает пустую строку
-  - [ ] Если контейнер — рекурсивно рендерит `children` с новым контекстом
-  - [ ] Вызывает `template.render(props, childrenHtml, context)`
-- [ ] Реализовать `renderEmail(document)`
-  - [ ] Создаёт начальный контекст
-  - [ ] Рендерит все корневые блоки
-  - [ ] Собирает полный HTML с `<!DOCTYPE>`, `<head>`, `<body>`
-- [ ] Проверить на простой модели: один параграф
-- [ ] Проверить на модели с вложенностью: карточка → параграф → кнопка
-- [ ] Проверить, что контекст корректно уменьшается при вложенности
+- [ ] Реализовать функцию `renderBlock(node, context)`:
+  - [ ] Находит шаблон в `templateRegistry` по `node.type`
+  - [ ] Если шаблон не найден — возвращает пустую строку и выводит предупреждение
+  - [ ] Если блок — контейнер (`isContainer: true`):
+    - [ ] Строит новый контекст через `buildContext(context, node.type)`
+    - [ ] Рекурсивно рендерит каждого ребёнка из `node.children`
+    - [ ] Склеивает HTML детей в одну строку `childrenHtml`
+  - [ ] Если блок содержит поле `content` (атомарный с `richtext`) — пропускает его через `parser.parse(node.content)` и кладёт результат в `props.content`
+  - [ ] Вызывает `template.render(props, childrenHtml, context)` и возвращает результат
+- [ ] Реализовать функцию `renderEmail(document)`:
+  - [ ] Из `document.meta` берёт `headerVariant` (по умолчанию `'white'`)
+  - [ ] Рендерит шапку: `headerTemplate.render(headerVariant, { contentWidth: 600, tokens })`
+  - [ ] Генерирует жёстко заданную контентную обёртку — таблица 600px с тремя столбцами: `50px | 500px | 50px` (отступы через `<td>`, не через `padding`)
+  - [ ] Создаёт начальный контекст: `{ depth: 0, contentWidth: 500, parentType: 'root', tokens }`
+  - [ ] Для каждого блока из `document.blocks` вызывает `renderBlock(node, context)`
+  - [ ] Рендерит подвал: `footerTemplate.render({ contentWidth: 600, tokens })`
+  - [ ] Собирает всё в полный HTML-документ: `<!DOCTYPE html>`, `<html>`, `<head>` (с базовыми сбросами для email), `<body>` с общей обёрткой 600px по центру
+- [ ] Экспортировать обе функции
+
+### 5.2. Интеграция парсера
+- [ ] Импортировать `parser.js` в рендерер
+- [ ] В `renderBlock` перед вызовом `template.render` проверять: есть ли у шаблона опции типа `richtext`
+- [ ] Для каждой такой опции в `node.props` (или `node.content` для атомарных блоков) применять `parser.parse()`
+- [ ] Результат парсинга подставлять в `props` вместо исходного текста
+- [ ] Убедиться, что парсер не вызывается повторно (если контент уже HTML — не парсить)
+
+### 5.3. Проверки
+- [ ] Проверить на простой модели: один блок `text` в корне → рендерится внутри контентной обёртки, шапка и подвал на месте
+- [ ] Проверить на модели с вложенностью: `card-heading` → `text` + `card-grey` → ширина карточки 500px, ширина серой плашки 468px
+- [ ] Проверить, что контекст корректно уменьшается при вложенности (500 → 468)
+- [ ] Проверить, что системные блоки рендерятся на ширине 600px (вне контентной обёртки)
+- [ ] Проверить, что парсер корректно обрабатывает разметку внутри `text` и `important`
+- [ ] Проверить, что вариант шапки (`headerVariant: 'red'`) подставляет правильную картинку
+- [ ] Проверить финальный HTML на валидность (нет незакрытых тегов, все инлайн-стили на месте)
+
+---
 
 ## Этап 6. Валидатор
 - [ ] Создать файл `src/core/validator.js`
@@ -120,20 +186,21 @@
 
 ## Этап 8. Store и дерево блоков
 ### 8.1. Store
-- [ ] Создать `src/editor/stores/emailStore.js` (Pinia)
-- [ ] Состояние: `document`, `selectedBlockId`
-- [ ] Действия:
-  - [ ] `addBlock(parentId, type)`
-  - [ ] `removeBlock(blockId)`
-  - [ ] `moveBlock(blockId, direction)`
-  - [ ] `updateProps(blockId, props)`
-  - [ ] `updateContent(blockId, content)`
-  - [ ] `selectBlock(blockId)`
-- [ ] Геттеры:
-  - [ ] `selectedBlock`
-  - [ ] `templateForBlock(block)`
+[ ] Создать `src/editor/stores/emailStore.js` (Pinia)
+[ ] Состояние: `document`, `selectedBlockId`
+[ ] Действия:
+[ ] `addBlock(parentId, type)`
+[ ] `removeBlock(blockId)`
+[ ] `moveBlock(blockId, direction)`
+[ ] `updateProps(blockId, props)`
+[ ] `updateContent(blockId, content)`
+[ ] `selectBlock(blockId)`
+[ ] `updateMeta(field, value)` ← **новое**: для изменения полей meta (subject, preheader, headerVariant)
+[ ] Геттеры:
+[ ] `selectedBlock`
+[ ] `templateForBlock(block)`
 
-### 8.2. Дерево блоков
+###  8.2. Дерево блоков
 - [ ] Создать `src/editor/components/BlockTree.vue`
 - [ ] Создать `src/editor/components/BlockTreeItem.vue` (рекурсивный)
 - [ ] Элемент дерева показывает: название, `[↑] [↓] [×]`, `[+]` для контейнеров
@@ -148,14 +215,16 @@
 - [ ] Дерево отображается корректно
 - [ ] Перемещение и удаление работают
 - [ ] Выбор блока работает
+- [ ] Системные блоки (header, footer) НЕ отображаются в дереве ← **новое**
 
 ## Этап 9. Палитра и добавление блоков
 - [ ] Создать `src/editor/components/BlockPalette.vue`
 - [ ] Палитра читает реестр шаблонов
-- [ ] Группировка по категориям: `layout`, `content`, `service`
+- [ ] **Фильтрация**: блоки с `isSystem: true` (header, footer) не показываются в палитре ← **новое**
+- [ ] Группировка по категориям: `layout`, `content` (категория `system` исключена) ← **уточнение**
 - [ ] При клике на блок:
-  - [ ] Если выбран контейнер — добавить внутрь
-  - [ ] Если ничего не выбрано — добавить в корень
+- [ ] Если выбран контейнер — добавить внутрь
+- [ ] Если ничего не выбрано — добавить в корень
 - [ ] После добавления блок становится выбранным
 - [ ] Проверить добавление в корень
 - [ ] Проверить добавление внутрь контейнера
