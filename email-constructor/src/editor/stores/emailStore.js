@@ -157,7 +157,7 @@ export const useEmailStore = defineStore('email', {
     },
 
     selectBlock(blockId) {
-      this.selectedBlockId = blockId;
+      this.selectedBlockId = this.selectedBlockId === blockId ? null : blockId;
     },
 
     updateMeta(field, value) {

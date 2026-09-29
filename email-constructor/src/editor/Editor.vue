@@ -3,6 +3,7 @@ import { onMounted } from 'vue';
 import { useEmailStore } from './stores/emailStore.js';
 import { testDocument } from './testDocument.js';
 import BlockTree from './components/BlockTree.vue';
+import BlockPalette from './components/BlockPalette.vue';
 import ExportPanel from './components/ExportPanel.vue';
 
 const store = useEmailStore();
@@ -16,6 +17,7 @@ onMounted(() => {
   <div class="editor">
     <div class="editor-layout">
       <div class="editor-sidebar">
+        <BlockPalette />
         <BlockTree />
       </div>
       <div class="editor-main">
@@ -57,6 +59,7 @@ onMounted(() => {
   width: 100%;
   height: 100vh;
   background-color: #f5f5f5;
+  overflow: hidden;
 }
 
 .editor-layout {
@@ -64,21 +67,43 @@ onMounted(() => {
   height: 100%;
   gap: 16px;
   padding: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .editor-sidebar {
   width: 320px;
   flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Палитра: не сжимается, скроллится если длинная, но не больше 45% высоты */
+.editor-sidebar > :first-child {
+  flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 45%;
+}
+
+/* Дерево: занимает всё оставшееся пространство */
+.editor-sidebar > :last-child {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .editor-main {
   flex: 1;
+  min-height: 0;
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .editor-right-panel {
@@ -87,11 +112,14 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .placeholder {
   text-align: center;
   color: #666;
+  padding: 16px;
 }
 
 .placeholder h2 {
