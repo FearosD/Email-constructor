@@ -404,7 +404,6 @@ export const someTemplate = {
   version: 1,
   meta: {
     subject: 'Тема письма',
-    preheader: 'Прехедер',
     headerVariant: 'white',   // 'white' | 'red'
     footerVariant: 'default'  // пока только один вариант
   },

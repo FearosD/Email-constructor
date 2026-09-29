@@ -13,7 +13,6 @@ export const useEmailStore = defineStore('email', {
       version: 1,
       meta: {
         subject: 'Тема письма',
-        preheader: 'Прехедер',
         headerVariant: 'white',
         footerVariant: 'default'
       },

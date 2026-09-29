@@ -3,6 +3,7 @@ import { onMounted } from 'vue';
 import { useEmailStore } from './stores/emailStore.js';
 import { testDocument } from './testDocument.js';
 import BlockTree from './components/BlockTree.vue';
+import ExportPanel from './components/ExportPanel.vue';
 
 const store = useEmailStore();
 
@@ -17,12 +18,35 @@ onMounted(() => {
       <div class="editor-sidebar">
         <BlockTree />
       </div>
-      
       <div class="editor-main">
         <div class="placeholder">
           <h2>Редактор email-писем</h2>
           <p>Дерево блоков загружено. Следующие этапы: палитра, инспектор, превью.</p>
         </div>
+      </div>
+      <div class="editor-right-panel">
+        <div class="meta-editor">
+          <h3>Настройки письма</h3>
+          <div class="meta-field">
+            <label>Тема:</label>
+            <input 
+              type="text" 
+              :value="store.document.meta.subject" 
+              @input="store.updateMeta('subject', $event.target.value)"
+            />
+          </div>
+          <div class="meta-field">
+            <label>Вариант шапки:</label>
+            <select 
+              :value="store.document.meta.headerVariant" 
+              @change="store.updateMeta('headerVariant', $event.target.value)"
+            >
+              <option value="white">Белая</option>
+              <option value="red">Красная</option>
+            </select>
+          </div>
+        </div>
+        <ExportPanel />
       </div>
     </div>
   </div>
@@ -57,6 +81,14 @@ onMounted(() => {
   justify-content: center;
 }
 
+.editor-right-panel {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .placeholder {
   text-align: center;
   color: #666;
@@ -65,5 +97,46 @@ onMounted(() => {
 .placeholder h2 {
   color: #1A1230;
   margin-bottom: 8px;
+}
+
+.meta-editor {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.meta-editor h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #1A1230;
+  font-weight: 600;
+}
+
+.meta-field {
+  margin-bottom: 12px;
+}
+
+.meta-field label {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.meta-field input,
+.meta-field select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.meta-field input:focus,
+.meta-field select:focus {
+  outline: none;
+  border-color: #FF0F43;
 }
 </style>

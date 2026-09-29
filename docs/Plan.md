@@ -187,36 +187,36 @@
 
 ## Этап 8. Store и дерево блоков
 ### 8.1. Store
-- [ ] Создать `src/editor/stores/emailStore.js` (Pinia)
-- [ ] Состояние: `document`, `selectedBlockId`
-- [ ] Действия:
-- [ ] `addBlock(parentId, type)`
-- [ ] `removeBlock(blockId)`
-- [ ] `moveBlock(blockId, direction)`
-- [ ] `updateProps(blockId, props)`
-- [ ] `updateContent(blockId, content)`
-- [ ] `selectBlock(blockId)`
-- [ ] `updateMeta(field, value)` ← **новое**: для изменения полей meta (subject, preheader, headerVariant)
-- [ ] Геттеры:
-- [ ] `selectedBlock`
-- [ ] `templateForBlock(block)`
+- [x] Создать `src/editor/stores/emailStore.js` (Pinia)
+- [x] Состояние: `document`, `selectedBlockId`
+- [x] Действия:
+- [x] `addBlock(parentId, type)`
+- [x] `removeBlock(blockId)`
+- [x] `moveBlock(blockId, direction)`
+- [x] `updateProps(blockId, props)`
+- [x] `updateContent(blockId, content)`
+- [x] `selectBlock(blockId)`
+- [x] `updateMeta(field, value)` ← **новое**: для изменения полей meta (subject, preheader, headerVariant)
+- [x] Геттеры:
+- [x] `selectedBlock`
+- [x] `templateForBlock(block)`
 
 ###  8.2. Дерево блоков
-- [ ] Создать `src/editor/components/BlockTree.vue`
-- [ ] Создать `src/editor/components/BlockTreeItem.vue` (рекурсивный)
-- [ ] Элемент дерева показывает: название, `[↑] [↓] [×]`, `[+]` для контейнеров
-- [ ] Клик по названию — выбор блока
-- [ ] Кнопки перемещения вызывают `moveBlock`
-- [ ] Кнопка удаления вызывает `removeBlock`
-- [ ] Кнопка `+` — заглушка (палитра в этапе 9)
-- [ ] Рекурсивный рендер детей для контейнеров
+- [x] Создать `src/editor/components/BlockTree.vue`
+- [x] Создать `src/editor/components/BlockTreeItem.vue` (рекурсивный)
+- [x] Элемент дерева показывает: название, `[↑] [↓] [×]`, `[+]` для контейнеров
+- [x] Клик по названию — выбор блока
+- [x] Кнопки перемещения вызывают `moveBlock`
+- [x] Кнопка удаления вызывает `removeBlock`
+- [x] Кнопка `+` — заглушка (палитра в этапе 9)
+- [x] Рекурсивный рендер детей для контейнеров
 
 ### 8.3. Проверка
-- [ ] Загрузить тестовую JSON-модель вручную в store
-- [ ] Дерево отображается корректно
-- [ ] Перемещение и удаление работают
-- [ ] Выбор блока работает
-- [ ] Системные блоки (header, footer) НЕ отображаются в дереве ← **новое**
+- [x] Загрузить тестовую JSON-модель вручную в store
+- [x] Дерево отображается корректно
+- [x] Перемещение и удаление работают
+- [x] Выбор блока работает
+- [x] Системные блоки (header, footer) НЕ отображаются в дереве ← **новое**
 
 ## Этап 9. Палитра и добавление блоков
 - [ ] Создать `src/editor/components/BlockPalette.vue`

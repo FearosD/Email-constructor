@@ -7,7 +7,6 @@ export const testDocument = {
     version: 1,
     meta: {
       subject: 'Тестовое письмо',
-      preheader: 'Проверка работы редактора',
       headerVariant: 'white',
       footerVariant: 'default'
     },
