@@ -446,7 +446,6 @@ export const someTemplate = {
    version: 1,
    meta: {
      subject: 'Приглашение на вебинар',
-     preheader: 'Ждём вас',
      headerVariant: 'white',
      footerVariant: 'default'
    },
@@ -554,7 +553,7 @@ if (parentContext.parentType === 'card' && blockType === 'important') {
 
 ### 8.1. Что выдаётся
 
-При нажатии «Экспорт» генерируются два файла:
+Доступен экспорт двух файлов (имя берется из темы):
 
 **`letter-name.html`** — финальный email-HTML:
 - Полный документ с `<!DOCTYPE>`, `<head>`, `<body>`
@@ -574,7 +573,7 @@ if (parentContext.parentType === 'card' && blockType === 'important') {
 3. Если есть ошибки — показать список, отменить экспорт
 4. Вызвать рендерер — получить HTML
 5. Сформировать Blob из HTML и JSON
-6. Отдать пользователю для скачивания (два файла в zip или по отдельности)
+6. Отдать пользователю для скачивания (по отдельности)
 
 ### 8.3. Импорт JSON
 
