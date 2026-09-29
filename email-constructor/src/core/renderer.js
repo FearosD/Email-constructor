@@ -93,13 +93,13 @@ export function renderEmail(model) {
         &nbsp;
       </td>
       <td valign="top" width="500">
-            ${contentHtml}
-            </td>
-            <td valign="top" width="50" align="left">
-              &nbsp;
-            </td>
-          </tr>
-        </tbody>
+		${contentHtml}
+	  </td>
+	  <td valign="top" width="50" align="left">
+		&nbsp;
+      </td>
+    </tr>
+  </tbody>
   </table>
   `;
 
@@ -121,27 +121,26 @@ export function renderEmail(model) {
       <tbody>
         <tr>
           <td align="center" height="100%" width="100%">
-  
             <table style="padding: 0; margin: 0;" border="0" width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff">
               <tbody>
                 <tr>
                   <td style="padding: 0;" valign="top" bgcolor="#F5F5F5">
-         <!-- шапка -->
-          ${headerHtml}
-        <!-- Контент -->
-          ${contentWrapper}
-        <!-- Подвал -->
-          ${footerHtml}
-          </td>
-          </tr>
-        </tbody>
-      </table>
-    </td>
-  </tr>
-</tbody>
-</table>
-</body>
-</html>
+					<!-- шапка -->
+					${headerHtml}
+					<!-- Контент -->
+					${contentWrapper}
+					<!-- Подвал -->
+					${footerHtml}
+				  </td>
+          		</tr>
+        	  </tbody>
+      		</table>
+    	  </td>
+  		</tr>
+	  </tbody>
+	</table>
+  </body>
+  </html>
 `;
 }
 
