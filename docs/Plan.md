@@ -113,6 +113,18 @@
   - [x] `allowedParents: ['root', 'card-simple', 'card-heading']`
   - [x] Рендер: просто возвращает `props.content` (парсер уже отработал)
   - [x] Без дополнительных таблиц и обёрток
+- [x] Создать `src/templates/blocks/support.js`
+  - [x] `isContainer: false`, `allowedParents: ['root']`
+  - [x] Опция: `content` (тип `richtext`)
+  - [x] Добавить поле `defaultContent` с готовым текстом техподдержки (в нашей разметке)
+- [x] Создать `src/templates/blocks/image.js`
+  - [x] `isContainer: false`, `allowedParents: ['card-simple']`
+  - [x] Опции: `src` (url), `height` (number), `spacing` (select: single/double)
+  - [x] Рендер: автогенерация `srcset` (добавление `@2x` к расширению), строгая верстка `<img>` без лишних стилей, отступ через `<br>` или `<br><br>`
+- [x] Создать `src/templates/blocks/button.js`
+  - [x] `isContainer: false`, `allowedParents: ['root', 'card-simple', 'card-heading']`
+  - [x] Опции: `text` (text, НЕ richtext), `url` (url), `width` (number), `height` (number), `fontSize` (number, в pt)
+  - [x] Рендер: условная верстка `<!--[if mso]>` (VML) + `<!--[if !mso]>` (HTML таблица), цвета из токенов, дублирование значений ширины/высоты/шрифта в обоих вариантах
 
 ### 4.3. Реестр шаблонов (`src/templates/index.js`)
 - [x] Импортировать все созданные шаблоны
@@ -291,9 +303,6 @@
 *Примечание: Базовые шаблоны (header, footer, card-simple, card-heading, card-grey, important, text) уже реализованы в Этапе 4. В этом этапе мы добавляем новые блоки по мере необходимости, детально разбирая верстку для каждого.*
 
 ### 12.1. Контентные блоки (заготовки на будущее)
-- [ ] `button` — кнопка
-- [ ] `image` — одиночная картинка
-- [ ] `divider` — разделитель
 - [ ] `icon-list` — список с иконками
 
 ### 12.2. Контейнеры (заготовки на будущее)

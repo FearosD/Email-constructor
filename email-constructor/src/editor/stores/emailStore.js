@@ -68,10 +68,11 @@ export const useEmailStore = defineStore('email', {
         id: generateId(),
         type: type,
         props: {},
-        content: '',
+        content: '', // По умолчанию пусто, но может быть перезаписано ниже
         children: template.isContainer ? [] : undefined
       };
-
+   
+      // 1. Заполняем дефолтные значения для props (твоя существующая логика)
       if (template.options) {
         Object.keys(template.options).forEach(key => {
           const option = template.options[key];
@@ -79,6 +80,12 @@ export const useEmailStore = defineStore('email', {
             newBlock.props[key] = option.default;
           }
         });
+      }
+   
+      // 2. НОВОЕ: Заполняем дефолтный контент, если он указан в шаблоне
+      // Проверяем, что блок не является контейнером (у контейнеров контент хранится в children, а не в content)
+      if (template.defaultContent && !template.isContainer) {
+        newBlock.content = template.defaultContent;
       }
 
       if (parentId === null) {

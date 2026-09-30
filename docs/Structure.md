@@ -79,7 +79,9 @@ email-constructor/
 │   │   │   ├── card-grey.js             # Серая плашка (атомарная)
 │   │   │   ├── important.js             # Блок "Важно" с красной полоской
 │   │   │   ├── text.js                  # Универсальный текстовый блок
-│   │   │   └── button.js                # Кнопка (будущий)
+│   │   │   ├── support.js               # Блок техподдержки (с defaultContent)
+│   │   │   ├── image.js                 # Изображение (с автогенерацией srcset)
+│   │   │   └── button.js                # Кнопка (VML + HTML)
 │   │   └── index.js                     # Реестр шаблонов
 │   │
 │   └── App.vue
@@ -481,41 +483,34 @@ export const someTemplate = {
 ### 6.4. Пример полного письма
 
 ```js
-{
-   version: 1,
-   meta: {
-     subject: 'Приглашение на вебинар',
-     headerVariant: 'white',
-     footerVariant: 'default'
-   },
-   blocks: [
-     {
-       id: 'c1',
-       type: 'card-heading',
-       props: {
-         heading: 'На вебинаре Вы узнаете:',
-         icon: 'desktop'
-       },
-       children: [
-         {
-           id: 't1',
-           type: 'text',
-           content: 'Приглашаем на **важное** событие.{br}Начало в 19:00.'
-         },
-         {
-           id: 'g1',
-           type: 'card-grey',
-           content: 'Ссылка придёт за 1 день до начала.'
-         }
-       ]
-     },
-     {
-       id: 'i1',
-       type: 'important',
-       content: '# Напоминаем,{br}что после завершения курса...'
-     }
-   ]
- }
+    blocks: [
+      // ... существующие блоки (card-heading, text, card-grey, important) ...
+      {
+        "id": "img1",
+        "type": "image",
+        "props": {
+          "src": "https://mguu.ru/files/emails/wi_kp_602/images/n_main.png",
+          "height": 148,
+          "spacing": "double"
+        }
+      },
+      {
+        "id": "btn1",
+        "type": "button",
+        "props": {
+          "text": "Заполнить анкету",
+          "url": "https://feedback.mguu.ru/837849.html",
+          "width": 200,
+          "height": 40,
+          "fontSize": 10.5
+        }
+      },
+      {
+        "id": "sup1",
+        "type": "support",
+        "content": "**Если у Вас появятся вопросы,** пожалуйста, напишите нам по адресу [ks@mos.ru](mailto:ks@mos.ru)."
+      }
+    ]
 ```
 
 ### 6.5. Работа с ID

@@ -5,6 +5,10 @@ import { cardHeadingTemplate } from './blocks/card-heading.js';
 import { importantTemplate } from './blocks/important.js';
 import { cardGreyTemplate } from './blocks/card-grey.js';
 import { textTemplate } from './blocks/text.js';
+import { supportTemplate } from './blocks/support.js';
+import { goodluckTemplate } from './blocks/goodluck.js';
+import { imageTemplate } from './blocks/image.js';
+import { buttonTemplate } from './blocks/button.js';
 
 /**
  * Реестр шаблонов блоков.
@@ -28,6 +32,10 @@ export const templateRegistry = {
   'text': textTemplate,
   'important': importantTemplate,
   'card-grey': cardGreyTemplate,
+  'support': supportTemplate,
+  'goodluck':goodluckTemplate,
+  'image': imageTemplate,
+  'button': buttonTemplate,
 };
 
 // Экспорт по умолчанию для удобства импорта
