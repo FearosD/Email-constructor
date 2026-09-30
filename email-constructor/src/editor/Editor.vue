@@ -6,6 +6,7 @@
 	import BlockPalette from './components/BlockPalette.vue';
 	import ExportPanel from './components/ExportPanel.vue';
 	import BlockInspector from './components/BlockInspector.vue';
+	import EmailPreview from './components/EmailPreview.vue';
 
 	const store = useEmailStore();
 
@@ -22,13 +23,7 @@
 				<BlockTree />
 			</div>
 			<div class="editor-main">
-				<div class="placeholder">
-					<h2>Редактор email-писем</h2>
-					<p>
-						Дерево блоков загружено. Следующие этапы: палитра, инспектор,
-						превью.
-					</p>
-				</div>
+				<EmailPreview />
 			</div>
 			<div class="editor-right-panel">
 				<div class="meta-editor">
@@ -100,16 +95,14 @@
 	}
 
 	.editor-main {
-		flex: 1;
-		min-height: 0;
-		background: white;
-		border: 1px solid #e0e0e0;
-		border-radius: 8px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		overflow-y: auto;
-	}
+    flex: 1;
+    min-height: 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    overflow: hidden;
+}
 
 	.editor-right-panel {
 		width: 360px;
@@ -126,17 +119,6 @@
 		flex: 1;
 		min-height: 0;
 		overflow-y: auto;
-	}
-
-	.placeholder {
-		text-align: center;
-		color: #666;
-		padding: 16px;
-	}
-
-	.placeholder h2 {
-		color: #1a1230;
-		margin-bottom: 8px;
 	}
 
 	.meta-editor {

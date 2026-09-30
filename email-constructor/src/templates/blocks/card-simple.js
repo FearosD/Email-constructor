@@ -3,7 +3,7 @@ import { tokens } from '../../core/tokens.js';
 
 export const cardSimpleTemplate = {
 	type: 'card-simple',
-	title: 'Простая плашка',
+	title: 'Белый блок',
 	category: 'layout',
 
 	// Опций нет — плашка всегда белая, пользователь цвет не меняет

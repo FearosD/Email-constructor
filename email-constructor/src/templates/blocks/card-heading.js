@@ -2,7 +2,7 @@ import { tokens } from '../../core/tokens.js';
 
 export const cardHeadingTemplate = {
 	type: 'card-heading',
-	title: 'Плашка с заголовком',
+	title: 'Белый блок (заголовок + иконка)',
 	category: 'layout',
 
 	options: {
