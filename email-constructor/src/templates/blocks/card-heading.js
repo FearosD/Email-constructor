@@ -72,6 +72,7 @@ export const cardHeadingTemplate = {
           <tr>
             <td valign="top" width="${sidePadding}"></td>
             <td valign="center" width="${contentWidth}" align="left" colspan="2">
+			<br>
               ${children}
               <!-- Костыль-распорка, цвет совпадает с фоном плашки (#ffffff) -->
               <span style="font: 14px Arial, sans-serif; color: #ffffff; line-height: 1.3; -webkit-text-size-adjust:none;">.<br></span>
