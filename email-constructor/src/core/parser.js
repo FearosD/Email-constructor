@@ -2,108 +2,74 @@
 import { tokens, getBaseStyle } from './tokens.js';
 
 // ---------- Утилиты ----------
-
-/**
- * Экранирует HTML-символы, но НЕ трогает уже готовые валидные сущности,
- * которые мог добавить типограф (например, &nbsp;, &mdash;, &laquo;).
- */
 function escapeHtml(str) {
   return str
-    // 1. Сначала экранируем угловые скобки
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    // 2. Экранируем &, только если за ним НЕ идёт известная HTML-сущность
-    .replace(/&(?!amp;|lt;|gt;|quot;|nbsp;|mdash;|ndash;|laquo;|raquo;|hellip;|#\d+;|#x[0-9a-fA-F]+;)/g, '&amp;');
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/&(?!amp;|lt;|gt;|quot;|nbsp;|mdash;|ndash;|laquo;|raquo;|hellip;|#\d+;|#x[0-9a-fA-F]+;)/g, '&');
 }
 
 // ---------- Инлайн-парсер ----------
-
-/**
- * Преобразует инлайн-разметку внутри одной строки.
- * @param {string} text - исходный текст
- * @param {number} size - размер шрифта для базовых стилей (важно для корректного рендера ссылок)
- */
 function parseInline(text, size = tokens.typography.body.size) {
   const baseStyle = getBaseStyle(size);
-
-  // 1. Ссылки [текст](url) -> <a> с полным набором инлайн-стилей
+  
   text = text.replace(
     /\[([^\]]+)\]\(([^)]+)\)/g,
     `<a href="$2" style="${baseStyle}">$1</a>`
   );
-
-  // 2. Жирный текст **текст** -> <b>текст</b>
+  
   text = text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
-
-  // 3. Красный текст {red}текст{/red} -> <span> с акцентным цветом
+  
   text = text.replace(
     /\{red\}(.+?)\{\/red\}/g,
     `<span style="color: ${tokens.colors.accent};">$1</span>`
   );
-
-  // 4. Неразрывный блок {nobr}текст{/nobr} -> <nobr>текст</nobr>
+  
   text = text.replace(/\{nobr\}(.+?)\{\/nobr\}/g, '<nobr>$1</nobr>');
-
-  // 5. Принудительный перенос внутри строки
+  
   text = text.replace(/\{br\}/g, '<br>');
-
+  
   return text;
 }
 
 // ---------- Блочный парсер ----------
-
-/**
- * Классифицирует одну строку текста.
- */
 function classifyLine(line) {
-  // Заголовки: проверяем ## перед #, чтобы не срезать часть строки
   if (line.startsWith('## ')) return { kind: 'h2', payload: line.slice(3) };
   if (line.startsWith('# ')) return { kind: 'h1', payload: line.slice(2) };
-  
-  // Маркированный список: строго в начале строки
   if (line.startsWith('- ')) return { kind: 'ul', payload: line.slice(2) };
-
-  // Нумерованный список: цифра + точка + пробел в начале строки
+  
   const olMatch = line.match(/^(\d+)\.\s+(.+)$/);
-  if (olMatch) return { kind: 'ol', payload: olMatch[2] };
-
-  // Пустая строка или строка, состоящая только из {br}
+  if (olMatch) return { kind: 'ol', number: olMatch[1], payload: olMatch[2] };
+  
   if (line.trim() === '' || line.trim() === '{br}') {
     return { kind: 'br' };
   }
-
-  // Всё остальное — обычный параграф
+  
   return { kind: 'paragraph', payload: line };
 }
 
-/**
- * Разбивает текст на блоки, группируя смежные элементы списков.
- */
 function buildBlocks(rawText) {
   const lines = rawText.split('\n');
   const blocks = [];
   let currentList = null;
-
+  
   const flushList = () => {
     if (currentList) {
       blocks.push(currentList);
       currentList = null;
     }
   };
-
+  
   for (const rawLine of lines) {
-    // Пустая строка = визуальный отступ между блоками
     if (rawLine.trim() === '') {
       flushList();
       blocks.push({ type: 'br' });
       continue;
     }
-
-    // Экранируем HTML (теперь никаких лишних тегов не пробросится)
+    
     const line = escapeHtml(rawLine);
     const classified = classifyLine(line);
-
-    // Обработка списков
+    
     if (classified.kind === 'ul' || classified.kind === 'ol') {
       if (currentList && currentList.type !== classified.kind) {
         flushList();
@@ -111,32 +77,91 @@ function buildBlocks(rawText) {
       if (!currentList) {
         currentList = { type: classified.kind, items: [] };
       }
+      
       const listSize = tokens.typography?.body?.size || 14;
-      currentList.items.push(parseInline(classified.payload, listSize));
+      const parsedText = parseInline(classified.payload, listSize);
+      
+      // Для нумерованного списка сохраняем номер
+      if (classified.kind === 'ol') {
+        currentList.items.push({
+          number: classified.number,
+          text: parsedText
+        });
+      } else {
+        currentList.items.push(parsedText);
+      }
       continue;
     }
-
-    // Любой не-списочный блок закрывает текущий список
+    
     flushList();
-
+    
     if (classified.kind === 'br') {
       blocks.push({ type: 'br' });
     } else {
       const typographyConfig = tokens.typography?.[classified.kind];
       const fontSize = typographyConfig?.size || tokens.typography?.body?.size || 14;
-      
       blocks.push({
         type: classified.kind,
         content: parseInline(classified.payload, fontSize),
       });
     }
   }
-
+  
   flushList();
   return blocks;
 }
 
 // ---------- Рендер блоков в HTML ----------
+
+// Рендер маркированного списка (таблица)
+function renderUlTable(items) {
+  const markerStyle = `font: 18px ${tokens.fontFamily}; color: ${tokens.colors.text}; line-height: 20px; -webkit-text-size-adjust:none;`;
+  const textStyle = `text-align: left; font: ${tokens.typography.body.size}px ${tokens.fontFamily}; color: ${tokens.colors.text}; line-height: ${tokens.typography.body.lineHeight}; -webkit-text-size-adjust:none;`;
+  
+  const rows = items.map((text) => `
+    <tr>
+      <td align="center" valign="top" width="20" style="padding:0 0 0 0; border-collapse:collapse">
+        <span style="${markerStyle}">&nbsp;•&nbsp;</span>
+      </td>
+      <td valign="top" align="left">
+        <span style="${textStyle}">${text}<br></span>
+      </td>
+    </tr>
+  `).join('');
+  
+  return `
+    <table style="padding: 0; text-align: left; margin: 0 auto; border-spacing: 0; border-collapse: collapse; overflow: hidden;" border="0" width="100%" cellspacing="0" cellpadding="0">
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+  `;
+}
+
+// Рендер нумерованного списка (таблица)
+function renderOlTable(items) {
+  const markerStyle = `text-align: center; font: ${tokens.typography.body.size}px ${tokens.fontFamily}; color: ${tokens.colors.text}; line-height: ${tokens.typography.body.lineHeight}; -webkit-text-size-adjust:none;`;
+  const textStyle = `text-align: left; font: ${tokens.typography.body.size}px ${tokens.fontFamily}; color: ${tokens.colors.text}; line-height: ${tokens.typography.body.lineHeight}; -webkit-text-size-adjust:none;`;
+  
+  const rows = items.map((item) => `
+    <tr>
+      <td align="center" valign="top" width="20" style="padding:0 0 0 0; border-collapse:collapse">
+        <span style="${markerStyle}">${item.number}.</span>
+      </td>
+      <td valign="top" align="left">
+        <span style="${textStyle}">${item.text}<br></span>
+      </td>
+    </tr>
+  `).join('');
+  
+  return `
+    <table style="padding: 0; text-align: left; margin: 0 auto; border-spacing: 0; border-collapse: collapse; overflow: hidden;" border="0" width="100%" cellspacing="0" cellpadding="0">
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+  `;
+}
 
 function renderBlocks(blocks) {
   return blocks.map((block) => {
@@ -155,16 +180,10 @@ function renderBlocks(blocks) {
       }
       case 'br':
         return `<br>`;
-      case 'ul': {
-        const liStyle = getBaseStyle(tokens.typography.body.size);
-        const items = block.items.map((i) => `<li style="${liStyle}">${i}</li>`).join('');
-        return `<ul style="padding-left: 20px;">${items}</ul>`;
-      }
-      case 'ol': {
-        const liStyle = getBaseStyle(tokens.typography.body.size);
-        const items = block.items.map((i) => `<li style="${liStyle}">${i}</li>`).join('');
-        return `<ol style="padding-left: 20px;">${items}</ol>`;
-      }
+      case 'ul':
+        return renderUlTable(block.items);
+      case 'ol':
+        return renderOlTable(block.items);
       default:
         return '';
     }
@@ -172,11 +191,9 @@ function renderBlocks(blocks) {
 }
 
 // ---------- Публичный API ----------
-
 export function parse(text) {
   if (typeof text !== 'string') return '';
   if (text.trim() === '') return '';
-  
   const blocks = buildBlocks(text);
   return renderBlocks(blocks);
 }
