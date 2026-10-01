@@ -30,7 +30,7 @@ export const goodluckTemplate = {
             ${contentHtml}
             <span style="font: 14px Arial, sans-serif; color: #ffffff; line-height: 1.3; -webkit-text-size-adjust:none;">.<br></span>
           </td>
-          <td valign="top" width="34" align="right"><br>
+          <td valign="middle" width="34" align="right">
             <img src="https://mguu.ru/files/emails/wi_kp_template/images/icon_book.png" srcset="https://mguu.ru/files/emails/wi_kp_template/images/icon_book@2x.png 2x" alt="" width="34" height="24">
           </td>
           <td valign="top" width="16">
